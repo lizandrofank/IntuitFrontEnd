@@ -1,0 +1,64 @@
+<p class="top-spacing"></p>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+<div class="search-container" >
+  <mat-form-field appearance="outline">
+    <mat-label>Selecciona una fecha</mat-label>
+    <input matInput [matDatepicker]="picker"
+           [(ngModel)]="selectedDate"
+           (ngModelChange)="onDateChange()" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Ciudad</mat-label>
+    <input matInput
+           [(ngModel)]="city"
+           (keydown.enter)="onSearch()" />
+  </mat-form-field>
+
+    <button class="search-button" color="primary" (click)="onSearch()">Buscar</button>
+    <button class="clear-button" color="warn" (click)="onClear()">Limpiar</button>
+    
+</div>
+
+
+
+<div class="weather-container">
+  <!-- Clima actual -->
+  <h3 class="forecast-title"  *ngIf="dayCurrent.city">Clima Actual </h3>
+  <div class="weather-card-current" *ngIf="dayCurrent.city">
+    <h2>{{ dayCurrent.city }}</h2>
+    <p><strong>🌡️ Temp. Mín:</strong> {{ dayCurrent.temp_min }}°C</p>
+    <p><strong>🌡️ Temp. Máx:</strong> {{ dayCurrent.temp_max }}°C</p>
+    <p><strong>💧 Humedad:</strong> {{ dayCurrent.humidity }}%</p>
+    <p><strong>🌧️ Prob. de lluvia:</strong> {{ dayCurrent.rainProbability }}</p>
+  </div>
+
+
+
+    <!-- Pronóstico de los próximos 5 días -->
+    <h3 class="forecast-title"  *ngIf="weatherData.city">Pronóstico Próximos 5 Días </h3>
+    <div class="forecast-container">
+      <div class="weather-card" *ngFor="let day of weatherData.forecast">
+        <p><strong class="forecast-date ">📅 {{ day.date | date:'EEEE, dd MMM' }}</strong></p>
+        <p><strong>🌡️ Min:</strong> {{ day.temp_min }}°C</p>
+        <p><strong>🌡️ Max:</strong> {{ day.temp_max }}°C</p>
+        <p><strong>💧 Humedad:</strong> {{ day.humidity }}%</p>
+        <p><strong>🌧️ Prob. de lluvia:</strong> {{ day.rainProbability }}</p>
+      </div>
+    </div>
+      <!-- Historico Clima-->
+      <div *ngIf="weatherDataHistory.date">
+        <h3 class="forecast-title"> Clima histórico para el dia {{ weatherDataHistory.date | date:'dd-MM-yyyy'}} </h3>
+       <div class="weather-card-current">
+         <h2>{{ weatherDataHistory.city }}</h2>
+         <p><strong>🌡️ Temp. Mín:</strong> {{ weatherDataHistory.temp_min }}°C</p>
+         <p><strong>🌡️ Temp. Máx:</strong> {{ weatherDataHistory.temp_max }}°C</p>
+         <p><strong>💧 Humedad:</strong> {{ weatherDataHistory.humidity }}%</p>
+         <p><strong>🌧️ Prob. de lluvia:</strong> {{ weatherDataHistory.rainProbability }}</p>
+       </div>
+     </div>
+</div>
